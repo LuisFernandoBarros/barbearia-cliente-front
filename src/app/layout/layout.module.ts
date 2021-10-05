@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AgendamentoModule } from './agendamento/agendamento.module';
-import { LayoutComponent } from './layout/layout.component';
+import { BarbeariaModule } from './barbearia/barbearia.module';
+import { LayoutComponent } from './layout.component';
 import { LayoutRoutingModule } from './layout-routing.module';
 
 
@@ -10,12 +10,12 @@ import { LayoutRoutingModule } from './layout-routing.module';
   declarations: [  
     LayoutComponent
   ],
-  imports: [
+  imports: [    
+    LayoutRoutingModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AgendamentoModule,
-    LayoutRoutingModule
+    BarbeariaModule
   ]
 })
 export class LayoutModule { }

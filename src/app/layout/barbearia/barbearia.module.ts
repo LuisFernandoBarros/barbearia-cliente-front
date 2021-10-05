@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgendamentoStepsComponent } from './agendamento-steps/agendamento-steps.component';
+import { BarbeariaRoutingModule } from './barbearia-routing.module';
+
 
 
 @NgModule({
@@ -11,7 +13,8 @@ import { AgendamentoStepsComponent } from './agendamento-steps/agendamento-steps
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BarbeariaRoutingModule
   ]
 })
-export class AgendamentoModule { }
+export class BarbeariaModule { }
