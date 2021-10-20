@@ -1,0 +1,13 @@
+<div class="login-page">
+    <div class="row justify-content-md-center">
+        <!-- SPINNER -->
+        <div class="text-center m-4" *ngIf="isLoading">
+            <div class="spinner-border text-warning"></div>
+        </div>
+        <div class="col-md-4" *ngIf="!isLoading">
+            <img class="user-avatar" [src]="urlLogo" width="200px" />
+            <h1>{{ barbearia.nome }}</h1>
+            <span style="font-size: 10px;">({{appInfo.VERSAO}})</span>
+        </div>
+    </div>
+</div>
