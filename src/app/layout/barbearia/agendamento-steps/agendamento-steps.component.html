@@ -2,7 +2,7 @@
 <div class="login-page">
     <div class="row justify-content-md-center gx-0" style="background-color: #000;">
         <div class="col-sm-4 col-12">
-            
+
             <!-- IDENTIFICACAO -->
             <form [formGroup]="identificacao" id="msform" *ngIf="!erro">
                 <fieldset *ngIf="step == 1 && !isAgendado">
@@ -90,6 +90,18 @@
                     </button>
                 </fieldset>
             </form>
+
+            <!-- AGENDADO COM SUCESSO -->
+            <div *ngIf="true" class="p-3 text-center">
+                <h2 class="fs-title">AGENDADO</h2>
+                <i class="fa fa-3x fa-check-circle" aria-hidden="true" style="color:forestgreen;"></i>
+                <div class="mt-3" style="color: white;">
+                    <h6>Obrigado!</h6>
+                </div>
+                <button (click)="onAgendarNovamente()" class="submit action-button">
+                    Agendar novamente
+                </button>
+            </div>
 
         </div>
     </div>
