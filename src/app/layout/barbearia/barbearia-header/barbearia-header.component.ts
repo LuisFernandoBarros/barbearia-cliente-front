@@ -11,17 +11,15 @@ import { APP_INFO } from '../../../shared/service/app-info.enum';
 export class BarbeariaHeaderComponent implements OnInit {
 
   @Input() barbearia!: Barbearia;
-  public appInfo = APP_INFO;  
+  @Input() erro!: string | null;
+  @Input() isLoading!: boolean;
+  public appInfo = APP_INFO;
   constructor(private logoService: ImageLogoService) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
   }
 
   get urlLogo(): string {
     return this.logoService.urlLogo(this.barbearia.id.toString());
-  }
-
-  get isLoading(): boolean {
-    return this.barbearia == undefined;
   }
 }

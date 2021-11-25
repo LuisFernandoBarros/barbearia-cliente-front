@@ -1,0 +1,125 @@
+.page {
+    height: 100%;
+    width: 100%;
+    background: #000;
+}
+
+/*form styles*/
+#msform {
+    text-align: center;
+    position: relative;
+    background: #000;
+}
+fieldset {
+    text-align: center;
+    background: #000;
+    border: 0 none;
+    border-radius: 0px;
+    /*box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4);*/
+    padding: 20px 30px;
+    /*box-sizing: border-box;*/
+    width: 100%;
+    margin: 0 0% 0 0%;
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+    display: none;
+}
+#msform input:focus,
+#msform textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #fab927;
+    outline-width: 0;
+    transition: All 0.5s ease-in;
+    -webkit-transition: All 0.5s ease-in;
+    -moz-transition: All 0.5s ease-in;
+    -o-transition: All 0.5s ease-in;
+}
+/*buttons*/
+/*#msform .action-button {*/
+.action-button {
+    /*width: 100px;*/
+    background: #fab927;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 15px 20px;
+    margin: 10px 5px;
+}
+
+.action-button[disabled] {
+    background: #ddd !important;
+}
+
+#msform .action-button:hover,
+#msform .action-button:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #fab927;
+}
+.action-button-previous {
+    /*width: 100px;*/
+    background: #77b6ea;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 15px 20px;
+    margin: 10px 5px;
+}
+#msform .action-button-previous:hover,
+#msform .action-button-previous:focus {
+    box-shadow: 0 0 0 0px white, 0 0 0 0px #c5c5f1;
+}
+/*headings*/
+.fs-title {
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #fab927;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+.fs-subtitle {
+    font-weight: normal;
+    font-size: 13px;
+    color: #fab927;
+    margin-bottom: 20px;
+}
+.horario-disabled {
+    background-color: #ddd;
+}
+
+.card {
+    background-color: #ffec93;
+    color: #000;
+    border-left: solid 5px #fab927;
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.card-horario {
+    background-color: #ffec93;
+    color: #000;    
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+.active {
+    background-color: #fab927;
+}
+
+.card-servico-details {
+    color: rgb(119, 119, 119);
+    font-size: 12px;
+}

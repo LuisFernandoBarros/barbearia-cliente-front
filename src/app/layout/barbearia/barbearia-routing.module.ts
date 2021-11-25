@@ -4,9 +4,11 @@ import { AgendamentoStepsComponent } from './agendamento-steps/agendamento-steps
 
 const routes: Routes = [
     {
-        path: 'agendar',
+        path: ':id/agendar',
         component: AgendamentoStepsComponent,
-    }
+    },
+    { path: '', redirectTo: 'not-found' },
+    { path: 'not-found', loadChildren: () => import('../../not-found/not-found.module').then((m) => m.NotFoundModule) },
 ];
 
 @NgModule({

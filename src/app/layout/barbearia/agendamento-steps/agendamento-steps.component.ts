@@ -20,20 +20,20 @@ import { MSG_PADRAO } from '../../../shared/service/msg-padrao.enum';
 export class AgendamentoStepsComponent implements OnInit {
 
   identificacao!: FormGroup;
-  servico!: FormGroup;
-  personal_step = false;
-  address_step = false;
-  education_step = false;
   step = 1;
   barbearia!: Barbearia
   servicos!: Array<Servico>;
-  //dates!: Date;
-  dates: {[index: number]:any} = {}
-  horarioSelected!: string
-  horarioWtihClasses: Array<any> = [];
+  dates!: any;
+  horarioSelected!: string | null;
   isServicoEnable = false;
   isSalvandoAgendamento = false;
   isAgendado = false;
+  loadingServicos!: boolean;
+  isLoading!: boolean
+  profissionalSelected!: number;
+  servicoSelected!: number;
+  horarios!: Array<string>;
+  erro!: string | null;
 
   // https://github.com/koenz/angular-datepicker
   datepickerOptions: Options = {
@@ -60,18 +60,16 @@ export class AgendamentoStepsComponent implements OnInit {
 
   ngOnInit() {
     moment.locale('pt-BR');
+    this.horarios = [];
+    this.loadingServicos = false;
 
     this.activedRoute.params.subscribe(
       (param: any) => { this.getProfissionais(param['id']) }
     )
 
     this.identificacao = this.formBuilder.group({
-      nome: ['', Validators.required],      
+      nome: ['', Validators.required],
       telefone: ['', Validators.required]
-    });
-    this.servico = this.formBuilder.group({
-      profissonal: ['', [Validators.required]],
-      servico: ['', [Validators.required]],
     });
   }
 
@@ -83,37 +81,29 @@ export class AgendamentoStepsComponent implements OnInit {
   }
 
   getProfissionais(barbeariaId: string) {
+    this.isLoading = true;
     this.barbeariaService.get(barbeariaId).subscribe(
       (resp) => {
+        this.isLoading = false;
         this.barbearia = resp;
+        this.erro = null;
+      },
+      (err) => {
+        this.isLoading = false;
+        const message = this.extractMsgService.extractMessageFromError(err, MSG_PADRAO.ERROR_SERVER);
+        this.erro = message;
+        this.toastService.error(message);
       }
     );
   }
 
-  onChangeProfissional(): void {
-    let profissionalSelected = this.servico.value["profissonal"];
-    this.service.getServicos(profissionalSelected).subscribe(
+  onChangeProfissional(idProfissional: number): void {
+    this.servicoSelected = 0;
+    this.profissionalSelected = idProfissional;
+    this.service.getServicos(idProfissional).subscribe(
       (resp) => {
         this.servicos = resp;
         this.isServicoEnable = true;
-      }
-    )
-  }
-
-  onChangeData() {
-    this.horarioWtihClasses = [];
-    let data = moment(this.dates[0]).format('YYYY-MM-DD');
-    let idProfissional = this.servico.value['profissonal'];
-    let idServico = this.servico.value['servico'];
-    this.service.getHorarios(idProfissional, data, idServico).subscribe(
-      (resp) => {
-        if (resp.length == 0) {
-          this.toastService.error("Sem horários disponíves. Selecione outra data.");
-        } else {
-          resp.forEach(horario => {
-            this.horarioWtihClasses.push({ horario: horario, classe: "" })
-          });
-        }
       },
       (err) => {
         this.toastService.error(this.extractMsgService.extractMessageFromError(err, MSG_PADRAO.ERROR_SERVER))
@@ -121,31 +111,48 @@ export class AgendamentoStepsComponent implements OnInit {
     )
   }
 
+  onChangeServico(idServico: number): void {
+    this.servicoSelected = idServico;
+  }
+
+  onChangeData() {
+    this.loadingServicos = true;
+    this.horarioSelected = null;
+    this.horarios = [];
+    let data = moment(this.dates[0]).format('YYYY-MM-DD');
+    this.service.getHorarios(this.profissionalSelected, data, this.servicoSelected).subscribe(
+      (resp) => {        
+        if (resp.length == 0) {
+          this.toastService.error("Sem horários disponíves. Selecione outra data.");
+        } else {
+          this.horarios = resp;
+        }        
+        this.loadingServicos = false;
+      },
+      (err) => {
+        this.loadingServicos = false;
+        this.toastService.error(this.extractMsgService.extractMessageFromError(err, MSG_PADRAO.ERROR_SERVER))
+      }
+    )
+  }
 
   onChangeHorario(horarioSelected: string) {
     this.horarioSelected = horarioSelected;
-    this.horarioWtihClasses.forEach(it => {
-      if (it.horario != horarioSelected) {
-        it.classe = "horario-disabled"
-      } else {
-        it.classe = "";
-      }
-    });
   }
 
   next() {
     this.step++;
   }
   previous() {
-    //this.dates = undefined;
-    //this.horarioSelected = undefined;
-    this.horarioWtihClasses = [];
+    this.dates = undefined;
+    this.horarioSelected = "";
+    this.horarios = [];
     this.step--;
   }
 
-  onAgendarNovamente(){
+  onAgendarNovamente() {
     this.isAgendado = false;
-    this.step = 1;    
+    this.step = 1;
   }
 
   submit() {
@@ -154,8 +161,8 @@ export class AgendamentoStepsComponent implements OnInit {
     const toSave = {
       data: moment(this.dates[0]).format('YYYY-MM-DD'),
       horario: this.horarioSelected,
-      profissional: this.servico.value["profissonal"],
-      servico: this.servico.value["servico"],
+      profissional: this.profissionalSelected,
+      servico: this.servicoSelected,
       nome: this.identificacao.value["nome"],
       telefone: this.identificacao.value["telefone"],
       tipo: 'CLIENTE'
@@ -163,13 +170,13 @@ export class AgendamentoStepsComponent implements OnInit {
 
     this.service.save(toSave).subscribe(
       (resp) => {
-        this.toastService.success("Agendando com sucesso! Aguardamos você, obrigado.");        
-        //this.dates = undefined;
-        //this.horarioSelected = undefined;
-        this.horarioWtihClasses = [];
+        this.toastService.success("Agendando com sucesso! Aguardamos você, obrigado.");
+        this.dates = undefined;
+        this.horarioSelected = "";
+        this.horarios = [];
         this.isAgendado = true;
         this.isSalvandoAgendamento = false;
-        window.scroll(0,0);
+        window.scroll(0, 0);
       },
       (err) => {
         this.toastService.error("Ocorreu um erro, tente mais tarde!");

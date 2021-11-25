@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BarbeariaModule } from './barbearia/barbearia.module';
 import { LayoutComponent } from './layout.component';
 import { LayoutRoutingModule } from './layout-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { LayoutRoutingModule } from './layout-routing.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    BarbeariaModule
+    BarbeariaModule,
+    SharedModule
   ]
 })
 export class LayoutModule { }

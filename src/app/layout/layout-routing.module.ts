@@ -2,13 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 const routes: Routes = [
-    {
-        path: '',
-        component: LayoutComponent
-    },    
+    { path: '', redirectTo: 'barbearia', pathMatch: 'prefix' },
     {
         path: 'barbearia',
-        component: LayoutComponent,
+        //omponent: LayoutComponent,
         children: [
             {
                 path: '',

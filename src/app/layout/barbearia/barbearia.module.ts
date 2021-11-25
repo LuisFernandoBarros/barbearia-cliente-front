@@ -5,6 +5,9 @@ import { AgendamentoStepsComponent } from './agendamento-steps/agendamento-steps
 import { BarbeariaRoutingModule } from './barbearia-routing.module';
 import { BarbeariaHeaderComponent } from './barbearia-header/barbearia-header.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NgxMaskModule } from 'ngx-mask';
+import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
+import { AaDatepickerModule } from 'ngx-animating-datepicker';
 
 
 
@@ -18,7 +21,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     BarbeariaRoutingModule,
-    SharedModule
+    SharedModule,
+    NgxMaskModule.forRoot(),
+    SharedPipesModule,    
+    AaDatepickerModule
   ]
 })
 export class BarbeariaModule { }
