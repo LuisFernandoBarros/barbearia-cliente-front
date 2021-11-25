@@ -8,8 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxMaskModule } from 'ngx-mask';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
 import { AaDatepickerModule } from 'ngx-animating-datepicker';
-
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,8 @@ import { AaDatepickerModule } from 'ngx-animating-datepicker';
     SharedModule,
     NgxMaskModule.forRoot(),
     SharedPipesModule,    
-    AaDatepickerModule
+    AaDatepickerModule,
+    FontAwesomeModule
   ]
 })
 export class BarbeariaModule { }

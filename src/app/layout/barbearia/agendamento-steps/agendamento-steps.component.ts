@@ -10,6 +10,7 @@ import { Options } from 'ngx-animating-datepicker';
 import * as moment from 'moment';
 import { ExtractMessageService } from '../../../shared/service/extract-message.service';
 import { MSG_PADRAO } from '../../../shared/service/msg-padrao.enum';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class AgendamentoStepsComponent implements OnInit {
   servicoSelected!: number;
   horarios!: Array<string>;
   erro!: string | null;
+  icon = faCheckCircle
 
   // https://github.com/koenz/angular-datepicker
   datepickerOptions: Options = {

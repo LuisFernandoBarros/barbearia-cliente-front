@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { RequestInterceptor } from './shared/service/request-interceptor';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RequestInterceptor } from './shared/service/request-interceptor';
     HttpClientModule,
     ToastrModule.forRoot({
       progressBar: true
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [
     {

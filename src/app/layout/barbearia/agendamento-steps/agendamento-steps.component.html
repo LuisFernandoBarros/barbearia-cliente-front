@@ -92,10 +92,10 @@
             </form>
 
             <!-- AGENDADO COM SUCESSO -->
-            <div *ngIf="true" class="p-3 text-center">
+            <div *ngIf="isAgendado" class="p-3 text-center">
                 <h2 class="fs-title">AGENDADO</h2>
-                <i class="fa fa-3x fa-check-circle" aria-hidden="true" style="color:forestgreen;"></i>
-                <div class="mt-3" style="color: white;">
+                <fa-icon class="fa fa" [icon]="icon" size="6x" style="color:forestgreen;"></fa-icon>
+                <div class="mt-3" style="color: rgb(165, 161, 161);">
                     <h6>Obrigado!</h6>
                 </div>
                 <button (click)="onAgendarNovamente()" class="submit action-button">
