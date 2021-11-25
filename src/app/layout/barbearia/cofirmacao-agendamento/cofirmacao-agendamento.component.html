@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h4 class="modal-title">Resumo do agendamento</h4>
+</div>
+<div class="modal-body">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Cliente</th>
+                <td>{{agendamentoToSave.nome}}</td>
+            </tr>
+            <tr>
+                <th class="col-4">Horário</th>
+                <td class="col-8">{{agendamentoToSave.data | date: 'dd/MM/y'}} às {{agendamentoToSave.horario |
+                    stringToHour}}</td>
+            </tr>
+            <tr>
+                <th>Profissional</th>
+                <td>{{agendamentoToSave.profissional.nome}}</td>
+            </tr>
+            <tr>
+                <th>Serviço</th>
+                <td>{{ agendamentoToSave.servico.descricao }}</td>
+            </tr>
+            <tr>
+                <th>Valor</th>
+                <td>{{agendamentoToSave.servico.valor | currency:'R$ ' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="confirmar()" [disabled]="isSalvandoAgendamento">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+            *ngIf="isSalvandoAgendamento"></span>
+        Confirmar
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(false)"
+        [disabled]="isSalvandoAgendamento">Cancelar</button>
+</div>

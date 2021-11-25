@@ -11,6 +11,8 @@ import * as moment from 'moment';
 import { ExtractMessageService } from '../../../shared/service/extract-message.service';
 import { MSG_PADRAO } from '../../../shared/service/msg-padrao.enum';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CofirmacaoAgendamentoComponent } from '../cofirmacao-agendamento/cofirmacao-agendamento.component';
 
 
 @Component({
@@ -31,8 +33,8 @@ export class AgendamentoStepsComponent implements OnInit {
   isAgendado = false;
   loadingServicos!: boolean;
   isLoading!: boolean
-  profissionalSelected!: number;
-  servicoSelected!: number;
+  profissionalSelected!: any;
+  servicoSelected!: any;
   horarios!: Array<string>;
   erro!: string | null;
   icon = faCheckCircle
@@ -58,7 +60,8 @@ export class AgendamentoStepsComponent implements OnInit {
     private barbeariaService: BarbeariaService,
     private service: AgendamentoService,
     private toastService: ToastrService,
-    private extractMsgService: ExtractMessageService) { }
+    private extractMsgService: ExtractMessageService,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     moment.locale('pt-BR');
@@ -72,6 +75,29 @@ export class AgendamentoStepsComponent implements OnInit {
     this.identificacao = this.formBuilder.group({
       nome: ['', Validators.required],
       telefone: ['', Validators.required]
+    });
+  }
+
+  openResumo() {
+    const toSave = {
+      data: this.dates[0],
+      servico: this.servicoSelected,
+      profissional: this.profissionalSelected,
+      horario: this.horarioSelected,
+      nome: this.identificacao.value["nome"],
+      telefone: this.identificacao.value["telefone"],
+      tipo: 'CLIENTE'
+    }
+    const modalRef = this.modalService.open(CofirmacaoAgendamentoComponent);
+    modalRef.componentInstance.agendamentoToSave = toSave;
+    modalRef.result.then((result) => {
+      if (result) {
+        this.isAgendado = true;
+        this.dates = null;
+        this.horarioSelected = null;
+        this.horarios = [];                
+        window.scroll(0, 0);        
+      }
     });
   }
 
@@ -99,10 +125,10 @@ export class AgendamentoStepsComponent implements OnInit {
     );
   }
 
-  onChangeProfissional(idProfissional: number): void {
-    this.servicoSelected = 0;
-    this.profissionalSelected = idProfissional;
-    this.service.getServicos(idProfissional).subscribe(
+  onChangeProfissional(profisional: any): void {
+    this.servicoSelected = null;
+    this.profissionalSelected = profisional;
+    this.service.getServicos(profisional.id).subscribe(
       (resp) => {
         this.servicos = resp;
         this.isServicoEnable = true;
@@ -113,8 +139,8 @@ export class AgendamentoStepsComponent implements OnInit {
     )
   }
 
-  onChangeServico(idServico: number): void {
-    this.servicoSelected = idServico;
+  onChangeServico(servico: any): void {
+    this.servicoSelected = servico;
   }
 
   onChangeData() {
@@ -122,13 +148,13 @@ export class AgendamentoStepsComponent implements OnInit {
     this.horarioSelected = null;
     this.horarios = [];
     let data = moment(this.dates[0]).format('YYYY-MM-DD');
-    this.service.getHorarios(this.profissionalSelected, data, this.servicoSelected).subscribe(
-      (resp) => {        
+    this.service.getHorarios(this.profissionalSelected.id, data, this.servicoSelected.id).subscribe(
+      (resp) => {
         if (resp.length == 0) {
           this.toastService.error("Sem horários disponíves. Selecione outra data.");
         } else {
           this.horarios = resp;
-        }        
+        }
         this.loadingServicos = false;
       },
       (err) => {
@@ -155,34 +181,5 @@ export class AgendamentoStepsComponent implements OnInit {
   onAgendarNovamente() {
     this.isAgendado = false;
     this.step = 1;
-  }
-
-  submit() {
-    this.isSalvandoAgendamento = true;
-
-    const toSave = {
-      data: moment(this.dates[0]).format('YYYY-MM-DD'),
-      horario: this.horarioSelected,
-      profissional: this.profissionalSelected,
-      servico: this.servicoSelected,
-      nome: this.identificacao.value["nome"],
-      telefone: this.identificacao.value["telefone"],
-      tipo: 'CLIENTE'
-    }
-
-    this.service.save(toSave).subscribe(
-      (resp) => {
-        this.toastService.success("Agendando com sucesso! Aguardamos você, obrigado.");
-        this.dates = undefined;
-        this.horarioSelected = "";
-        this.horarios = [];
-        this.isAgendado = true;
-        this.isSalvandoAgendamento = false;
-        window.scroll(0, 0);
-      },
-      (err) => {
-        this.toastService.error("Ocorreu um erro, tente mais tarde!");
-        this.isSalvandoAgendamento = false;
-      });
   }
 }

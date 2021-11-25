@@ -9,11 +9,13 @@ import { NgxMaskModule } from 'ngx-mask';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
 import { AaDatepickerModule } from 'ngx-animating-datepicker';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CofirmacaoAgendamentoComponent } from './cofirmacao-agendamento/cofirmacao-agendamento.component';
 
 @NgModule({
   declarations: [
     AgendamentoStepsComponent,
-    BarbeariaHeaderComponent
+    BarbeariaHeaderComponent,
+    CofirmacaoAgendamentoComponent
   ],
   imports: [
     CommonModule,

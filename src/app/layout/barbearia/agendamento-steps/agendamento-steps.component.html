@@ -28,15 +28,15 @@
 
 
                 <div *ngFor="let profissonal of barbearia.profissionais" class="card"
-                    (click)="onChangeProfissional(profissonal.id)"
-                    [ngClass]="{'active': profissonal.id == profissionalSelected}">
+                    (click)="onChangeProfissional(profissonal)"
+                    [ngClass]="{'active': profissionalSelected!= null && profissonal.id == profissionalSelected.id}">
                     {{profissonal.nome}}
                 </div>
 
 
                 <h2 class="fs-title" *ngIf="isServicoEnable">SERVIÇO</h2>
-                <div *ngFor="let servico of servicos" class="card" (click)="onChangeServico(servico.id)"
-                    [ngClass]="{'active': servico.id == servicoSelected}">
+                <div *ngFor="let servico of servicos" class="card" (click)="onChangeServico(servico)"
+                    [ngClass]="{'active': servicoSelected != null && servico.id == servicoSelected.id}">
                     {{servico.descricao}}
                     <div class="card-servico-details">
                         Valor: {{ servico.valor | currency:'R$ ' }}<br>
@@ -82,8 +82,7 @@
                         class="previous action-button-previous mt-3" value="Previous">
                         Voltar
                     </button>
-                    <button (click)="submit()" type="submit" name="submit" class="submit action-button" value="Submit"
-                        [disabled]="!isValidHorario">
+                    <button (click)="openResumo()" class="submit action-button" [disabled]="!isValidHorario">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                             *ngIf="isSalvandoAgendamento"></span>
                         Agendar
