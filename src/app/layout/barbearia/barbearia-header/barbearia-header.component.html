@@ -1,0 +1,22 @@
+<div class="login-page">
+    <div class="row justify-content-md-center">
+        <!-- SPINNER -->
+        <div class="text-center m-4" *ngIf="isLoading">
+            <div class="spinner-border text-warning"></div>
+        </div>
+        <!-- EM CASO DE ERRO -->
+        <div class="row justify-content-md-center" *ngIf="!isLoading && erro">
+            <div class="col-md-4 text-center">
+                <img class="user-avatar mb-5 mt-5" src="../../../assets/images/logo.png" width="200px" />
+                <h1 style="color: white;">{{erro}}</h1>
+                <span style="font-size: 10px;">({{appInfo.VERSAO}})</span>
+            </div>
+        </div>
+        <!-- EM CASO DE SUCESSO -->
+        <div class="col-md-4" *ngIf="!isLoading && !erro">
+            <img class="user-avatar" [src]="urlLogo" width="200px" />
+            <h1>{{ barbearia.nome }}</h1>
+            <span style="font-size: 10px;">({{appInfo.VERSAO}})</span>
+        </div>
+    </div>
+</div>

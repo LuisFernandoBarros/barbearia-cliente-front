@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --ssl --ssl-key c:\\certificados\\localhost.key  --ssl-cert c:\\certificados\\localhost.crt",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -18,6 +18,16 @@
     "@angular/platform-browser": "~12.0.2",
     "@angular/platform-browser-dynamic": "~12.0.2",
     "@angular/router": "~12.0.2",
+    "@fortawesome/angular-fontawesome": "^0.9.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@ng-bootstrap/ng-bootstrap": "^10.0.0",
+    "angular-moment": "^1.3.0",
+    "bootstrap": "^5.1.3",
+    "moment": "^2.29.1",
+    "ngx-animating-datepicker": "^1.2.1",
+    "ngx-mask": "^12.0.0",
+    "ngx-toastr": "^14.2.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"

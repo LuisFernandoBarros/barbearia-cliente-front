@@ -1,0 +1,107 @@
+<app-barbearia-header [barbearia]="barbearia" [erro]="erro" [isLoading]="isLoading"></app-barbearia-header>
+<div class="login-page">
+    <div class="row justify-content-md-center gx-0" style="background-color: #000;">
+        <div class="col-sm-4 col-12">
+
+            <!-- IDENTIFICACAO -->
+            <form [formGroup]="identificacao" id="msform" *ngIf="!erro">
+                <fieldset *ngIf="step == 1 && !isAgendado">
+                    <h2 class="fs-title">IDENTIFICAÇÃO</h2>
+                    <input type="text" formControlName="nome" placeholder="Seu nome"
+                        class="form-control ng-untouched ng-pristine ng-valid mt-3" maxlength="100" />
+                    <app-error-msg [control]="identificacao.get('nome')" label="Nome"></app-error-msg>
+
+                    <input type="text" formControlName="telefone" name="telefone" placeholder="Seu telefone"
+                        class="form-control ng-untouched ng-pristine ng-valid mt-3" mask="(00) 0*" maxlength="20"
+                        minlength="11" />
+                    <app-error-msg [control]="identificacao.get('telefone')" label="Telefone"></app-error-msg>
+
+                    <button (click)="next()" type="button" class="action-button mt-3"
+                        [disabled]="!identificacao.valid">Próximo</button>
+                </fieldset>
+            </form>
+
+
+            <!-- SELECIONE BARBEIRO/SERVICO -->
+            <fieldset *ngIf="step == 2 && !isAgendado">
+                <h2 class="fs-title">PROFISSIONAL</h2>
+
+
+                <div *ngFor="let profissonal of barbearia.profissionais" class="card"
+                    (click)="onChangeProfissional(profissonal)"
+                    [ngClass]="{'active': profissionalSelected!= null && profissonal.id == profissionalSelected.id}">
+                    {{profissonal.nome}}
+                </div>
+
+
+                <h2 class="fs-title" *ngIf="isServicoEnable">SERVIÇO</h2>
+                <div *ngFor="let servico of servicos" class="card" (click)="onChangeServico(servico)"
+                    [ngClass]="{'active': servicoSelected != null && servico.id == servicoSelected.id}">
+                    {{servico.descricao}}
+                    <div class="card-servico-details">
+                        Valor: {{ servico.valor | currency:'R$ ' }}<br>
+                        Tempo: {{ servico.tempo | stringToHour}}
+                    </div>
+                </div>
+
+                <button (click)="previous()" type="button" name="previous" class="previous action-button-previous mt-3"
+                    value="Previous">
+                    Voltar
+                </button>
+
+                <button (click)="next()" type="button" name="next" class="next action-button mt-3" value="Next"
+                    [disabled]="!servicoSelected">Próximo</button>
+            </fieldset>
+
+
+            <!-- SELECIONE HORARIO -->
+            <form id="msform">
+                <fieldset *ngIf="step == 3 && !isAgendado">
+                    <h2 class="fs-title">DATA</h2>
+
+                    <aa-animatepicker [options]="datepickerOptions" language="pt-BR" [(selectedDates)]="dates"
+                        (click)="onChangeData()">
+                    </aa-animatepicker>
+
+                    <!-- SPINNER -->
+                    <div class="text-center m-4" *ngIf="loadingServicos">
+                        <div class="spinner-border text-warning"></div>
+                    </div>
+                    <div class="row justify-content-md-center" *ngIf="!loadingServicos">
+                        <div class="col-12">
+                            <h6 class="fs-subtitle" *ngIf="horarios.length > 0">Selecione um horário
+                            </h6>
+                            <span *ngFor="let horario of horarios" class="card-horario m-1 p-3"
+                                [ngClass]="{'active': horario == horarioSelected}" (click)="onChangeHorario(horario)">
+                                {{horario | mask: '00:00'}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <button (click)="previous()" type="button" name="previous"
+                        class="previous action-button-previous mt-3" value="Previous">
+                        Voltar
+                    </button>
+                    <button (click)="openResumo()" class="submit action-button" [disabled]="!isValidHorario">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                            *ngIf="isSalvandoAgendamento"></span>
+                        Agendar
+                    </button>
+                </fieldset>
+            </form>
+
+            <!-- AGENDADO COM SUCESSO -->
+            <div *ngIf="isAgendado" class="p-3 text-center">
+                <h2 class="fs-title">AGENDADO</h2>
+                <fa-icon class="fa fa" [icon]="icon" size="6x" style="color:forestgreen;"></fa-icon>
+                <div class="mt-3" style="color: rgb(165, 161, 161);">
+                    <h6>Obrigado!</h6>
+                </div>
+                <button (click)="onAgendarNovamente()" class="submit action-button">
+                    Agendar novamente
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
