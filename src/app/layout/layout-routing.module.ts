@@ -2,15 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 const routes: Routes = [
-    { path: '', redirectTo: 'barbearia', pathMatch: 'prefix' },
     {
-        path: 'barbearia',
-        //omponent: LayoutComponent,
+        path: '',
+        component: LayoutComponent,
         children: [
             {
                 path: '',
-                loadChildren: () => import('./barbearia/barbearia.module').then((m) => m.BarbeariaModule),
+                redirectTo: 'barbearia',
+                pathMatch: 'prefix'
             },
+            {
+                path: 'barbearia',
+                loadChildren: () => import('./barbearia/barbearia.module').then((m) => m.BarbeariaModule),
+            }
         ]
     }
 ];
